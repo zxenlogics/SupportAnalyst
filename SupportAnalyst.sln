@@ -5,6 +5,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupportAnalyst.Model", "Sup
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupportAnalyst.Repository", "SupportAnalyst.Repository\SupportAnalyst.Repository.csproj", "{41FBA5DD-C751-49FC-B5CC-58B1DF1FB279}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupportAnalyst.UnitTest", "SupportAnalyst.UnitTest\SupportAnalyst.UnitTest.csproj", "{DA28CE2E-D020-4735-AB1D-AB53FC042F6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupportAnalyst.Web", "SupportAnalyst.Web\SupportAnalyst.Web.csproj", "{CACE0CE3-0150-41DE-9FAD-6B5B55ADE9D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +23,14 @@ Global
 		{41FBA5DD-C751-49FC-B5CC-58B1DF1FB279}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41FBA5DD-C751-49FC-B5CC-58B1DF1FB279}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41FBA5DD-C751-49FC-B5CC-58B1DF1FB279}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA28CE2E-D020-4735-AB1D-AB53FC042F6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA28CE2E-D020-4735-AB1D-AB53FC042F6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA28CE2E-D020-4735-AB1D-AB53FC042F6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA28CE2E-D020-4735-AB1D-AB53FC042F6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CACE0CE3-0150-41DE-9FAD-6B5B55ADE9D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CACE0CE3-0150-41DE-9FAD-6B5B55ADE9D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CACE0CE3-0150-41DE-9FAD-6B5B55ADE9D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CACE0CE3-0150-41DE-9FAD-6B5B55ADE9D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
