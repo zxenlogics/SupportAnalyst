@@ -8,7 +8,7 @@ using System.Data.Entity;
 
 using SupportAnalyst.Model;
 
-namespace SupportAnalyst.Repository
+namespace SupportAnalyst.Data
 {
     public class PACDbContext : DbContext
     {

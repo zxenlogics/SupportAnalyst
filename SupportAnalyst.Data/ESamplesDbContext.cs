@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using SupportAnalyst.Model;
 
-namespace SupportAnalyst.Repository
+namespace SupportAnalyst.Data
 {
     public class ESamplesDbContext : DbContext
     {

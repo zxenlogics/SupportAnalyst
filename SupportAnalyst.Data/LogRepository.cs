@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using SupportAnalyst.Model;
 
 
-namespace SupportAnalyst.Repository
+namespace SupportAnalyst.Data
 {
     //public class PacLogRepository : LogRepository<ESamplesDbContext>
     //{

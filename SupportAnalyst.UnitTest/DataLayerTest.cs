@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using SupportAnalyst.Model;
-using SupportAnalyst.Repository;
+using SupportAnalyst.Data;
 
 namespace SupportAnalyst.UnitTest
 {
@@ -17,19 +18,58 @@ namespace SupportAnalyst.UnitTest
     }
 
     [TestClass]
-    public class UnitTest1
+    public class DataLayerTest
     {
+        public DataLayerTest()
+        {
+            //Database.SetInitializer<ESamplesDbContext>(null);
+            //Database.SetInitializer<PACDbContext>(null);
+        }
+
+        [TestMethod]
+        public void FluentTest()
+        {
+            var criteria = new QueryCriteria();
+
+            Criteria d = criteria.EventType("Error")
+                .EventStartTime(DateTime.Now)
+                .EventEndTime(DateTime.Now)
+                .MessageKeyword("SessionId").Instance();
+
+
+        }
+
+
+        [TestMethod]
+        [TestCategory("Synchronous")]
+        public void RepositoryTest()
+        {
+            var samplesRepository = new GenericRepository<LogEntry>(new ESamplesDbContext());
+            var pacRepository = new GenericRepository<LogEntry>(new PACDbContext());
+
+            Stopwatch timer = Stopwatch.StartNew();
+
+            var samplesLogEntry = samplesRepository.FindById(56985);
+            var pacLogEntry = pacRepository.FindById(56985);
+
+            timer.Stop();
+
+            Console.WriteLine("Stop: {0}, eSamples.Message: {1}", timer.Elapsed.Seconds, samplesLogEntry.Message);
+            Console.WriteLine("Stop: {0}, Pac.Message: {1}", timer.Elapsed.Seconds, samplesLogEntry.Message);
+        }
+
+
         [TestMethod]
         public void TestMethod1()
         {
-            var samplesDb = new ESamplesDbContext();
-            var pacDb = new PACDbContext();
-            var samplesRepository = new LogRepository<ESamplesDbContext>(new ESamplesDbContext());
+            var samplesRepository = new GenericRepository<LogEntry>(new ESamplesDbContext());
 
             Stopwatch timer = Stopwatch.StartNew();
 
             //var samplesCount = samplesDb.LogEntries.Where(w => w.LogType == "Error").ToList();
-            var logEntry = samplesRepository.FindById(56984);
+            //var logEntry = samplesRepository.FindById(56985);
+            var logEntry = samplesRepository.FindById(4);                       
+            
 
             //var samplesCount =
             //    samplesDb.LogEntries.Count(

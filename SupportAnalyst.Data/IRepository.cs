@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SupportAnalyst.Repository
+namespace SupportAnalyst.Data
 {
     public interface IRepository<T> where T: class
     {
         T FindById(int key);
-        List<T> Get();
+        IEnumerable<T> Get();
         List<T> FindByKeyword(string keyword, int pageIndex, int pageSize);
         List<T> FindByKeyword(string keyword, DateTime startTime, DateTime endTime, int pageIndex, int pageSize);
         List<T> FindByCriteria(Criteria criteria); 

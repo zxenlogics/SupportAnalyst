@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using SupportAnalyst.Model;
 
-namespace SupportAnalyst.Repository
+namespace SupportAnalyst.Data
 {
     public class GenericRepository<T> : IRepository<T>, IDisposable where T: class
     {
         private readonly DbContext _dataContext;
         private DbSet<T> _dbSet;
+        private readonly int _defaultHoursFromNow = 12;
 
         public GenericRepository()
         {}
@@ -19,6 +20,7 @@ namespace SupportAnalyst.Repository
         public GenericRepository(DbContext dataContext)
         {
             _dataContext = dataContext;
+            _dbSet = _dataContext.Set<T>();
         }
 
         public virtual DbContext DataContext
@@ -38,10 +40,10 @@ namespace SupportAnalyst.Repository
 
         public T FindById(int key)
         {
-            return _dataContext.Set<T>().Find(key);
+            return _dbSet.Find(key);  //_dataContext.Set<T>().Find(key);
         }
 
-        public List<T> Get()
+        public IEnumerable<T> Get()
         {
             throw new NotImplementedException();
         }

@@ -313,10 +313,6 @@
       <Project>{341a6716-d91b-4189-a9aa-c0d0fe3530f5}</Project>
       <Name>SupportAnalyst.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SupportAnalyst.Repository\SupportAnalyst.Repository.csproj">
-      <Project>{41fba5dd-c751-49fc-b5cc-58b1df1fb279}</Project>
-      <Name>SupportAnalyst.Repository</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
