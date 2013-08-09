@@ -20,10 +20,15 @@ namespace SupportAnalyst.UnitTest
     [TestClass]
     public class DataLayerTest
     {
+        ILogRepository samplesRepository;
+        ILogRepository pacRepository;
+
         public DataLayerTest()
         {
             //Database.SetInitializer<ESamplesDbContext>(null);
             //Database.SetInitializer<PACDbContext>(null);
+            samplesRepository = new LogRepository(new ESamplesDbContext());
+            pacRepository = new LogRepository(new PACDbContext());
         }
 
         [TestMethod]
@@ -31,18 +36,19 @@ namespace SupportAnalyst.UnitTest
         {
             var criteria = new QueryCriteria();
 
-            Criteria d = criteria.EventType("Error")
-                .EventStartTime(DateTime.Now)
-                .EventEndTime(DateTime.Now)
-                .MessageKeyword("SessionId").Instance();
+            //Criteria d = criteria.EventType("Error")
+            //    .EventStartTime(DateTime.Now)
+            //    .EventEndTime(DateTime.Now)
+            //    .MessageKeyword("SessionId");
 
 
         }
 
+        #region << GenericRepositoryTest >>
 
         [TestMethod]
         [TestCategory("Synchronous")]
-        public void RepositoryTest()
+        public void GenericRepositoryTest()
         {
             var samplesRepository = new GenericRepository<LogEntry>(new ESamplesDbContext());
             var pacRepository = new GenericRepository<LogEntry>(new PACDbContext());
@@ -57,7 +63,53 @@ namespace SupportAnalyst.UnitTest
             Console.WriteLine("Stop: {0}, eSamples.Message: {1}", timer.Elapsed.Seconds, samplesLogEntry.Message);
             Console.WriteLine("Stop: {0}, Pac.Message: {1}", timer.Elapsed.Seconds, samplesLogEntry.Message);
         }
+        #endregion
 
+        #region << LogRepository.Get() >>
+
+        [TestMethod]
+        [TestCategory("Synchronous")]
+        public void LogRepositoryGetTest()
+        {
+            //ILogRepository samplesRepository = new LogRepository(new ESamplesDbContext());
+            //ILogRepository pacRepository = new LogRepository(new PACDbContext());
+
+            Stopwatch timer = Stopwatch.StartNew();
+
+            var samplesLogEntry = samplesRepository.FindByKeyword("Method");
+            var pacLogEntry = pacRepository.FindById(8);
+
+            timer.Stop();
+
+            Console.WriteLine("Elapsed: {0}, eSamples.Misc: {1}\n eSamples.Message: {2}\n", timer.Elapsed.Seconds, samplesLogEntry.Count, samplesLogEntry[1].Message);
+            Console.WriteLine("Elapsed: {0}, Pac.MachineName: {1}\n Pac.Message: {2},", timer.Elapsed.Seconds, pacLogEntry.Misc, pacLogEntry.Message);
+        }
+        #endregion
+
+
+        #region << LogRepositoryTest >>
+
+        [TestMethod]
+        [TestCategory("Synchronous")]
+        public void LogRepositoryTest()
+        {
+            ILogRepository samplesRepository = new LogRepository(new ESamplesDbContext());
+            ILogRepository pacRepository = new LogRepository(new PACDbContext());
+
+            Stopwatch timer = Stopwatch.StartNew();
+
+            var samplesLogEntry = samplesRepository.FindById(41373);
+            var pacLogEntry = pacRepository.FindById(8);
+
+            timer.Stop();
+
+            Console.WriteLine("Elapsed: {0}, eSamples.Logger: {1}\n eSamples.Message: {2}\n", timer.Elapsed.Seconds, samplesLogEntry.Misc, samplesLogEntry.Message);
+            Console.WriteLine("Elapsed: {0}, Pac.MachineName: {1}\n Pac.Message: {2},", timer.Elapsed.Seconds, pacLogEntry.Misc, pacLogEntry.Message);
+        }
+
+        #endregion
+
+        #region << Old Tests >>
 
         [TestMethod]
         public void TestMethod1()
@@ -136,6 +188,7 @@ namespace SupportAnalyst.UnitTest
 
             Console.WriteLine("Elapsed time: {0}s, {1}{2}", timer.Elapsed.Seconds, tasks[index].Result.Msg, tasks[index].Result.Count);
         }
+        #endregion
 
     }
 }

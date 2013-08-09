@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using SupportAnalyst.Model;
 
 namespace SupportAnalyst.Data
 {
@@ -12,7 +14,7 @@ namespace SupportAnalyst.Data
         IFluentCriteria EventStartTime(DateTime startTime);
         IFluentCriteria EventEndTime(DateTime endTime);
         IFluentCriteria MessageKeyword(string keyword);
-        Criteria Instance();
+        Expression<Func<LogEntry, bool>> CriteriaExpression();
     }
 
     public class Criteria
@@ -25,6 +27,15 @@ namespace SupportAnalyst.Data
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public string Keyword { get; set; }
+
+        public Expression<Func<LogEntry, bool>> GetExpression()
+        {
+           Expression<Func<LogEntry, bool>> filter = l =>            
+                l.LogType == LogType && l.TimeStamp >= StartTime && l.TimeStamp <= EndTime &&
+                l.Message.Contains(Keyword);
+            
+            return filter;
+        }
     }
 
     public class QueryCriteria : IFluentCriteria
@@ -61,9 +72,9 @@ namespace SupportAnalyst.Data
             return this;
         }
 
-        public Criteria Instance()
+        public Expression<Func<LogEntry, bool>> CriteriaExpression()
         {
-            return _criteria;
+            return _criteria.GetExpression();
         }
     }
 

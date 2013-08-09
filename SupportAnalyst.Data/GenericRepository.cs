@@ -10,68 +10,66 @@ namespace SupportAnalyst.Data
 {
     public class GenericRepository<T> : IRepository<T>, IDisposable where T: class
     {
-        private readonly DbContext _dataContext;
-        private DbSet<T> _dbSet;
-        private readonly int _defaultHoursFromNow = 12;
+        //private readonly DbContext _dataContext;
+        //private DbSet<T> _dbSet;        
 
         public GenericRepository()
         {}
 
         public GenericRepository(DbContext dataContext)
         {
-            _dataContext = dataContext;
-            _dbSet = _dataContext.Set<T>();
+            if (dataContext == null)
+            {
+                throw new ArgumentException("An instance of DbContext is required.");
+            }
+            DataContext = dataContext;
+            DbSet = DataContext.Set<T>();
         }
 
-        public virtual DbContext DataContext
-        {
-            get
-            {
-                return _dataContext;
-            }            
-        }
+        protected DbContext DataContext { get; set; }
+        protected DbSet<T> DbSet { get; set; }
 
         public int ExecuteCommand(string cmdText)
         {
-            return 0;
+            return DataContext.Database.ExecuteSqlCommand(cmdText);
+        }
+
+        public T FindById(int key)
+        {
+            return DbSet.Find(key);
+        }
+
+        public IQueryable<T> Get()
+        {
+            return DbSet;
         }
 
         #region << IRepository<T> members >>
 
-        public T FindById(int key)
-        {
-            return _dbSet.Find(key);  //_dataContext.Set<T>().Find(key);
-        }
+        //public List<T> FindByKeyword(string keyword, int pageIndex, int pageSize)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public IEnumerable<T> Get()
-        {
-            throw new NotImplementedException();
-        }
+        //public List<T> FindByKeyword(string keyword, DateTime startTime, DateTime endTime, int pageIndex, int pageSize)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public List<T> FindByKeyword(string keyword, int pageIndex, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
+        //public void Delete()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public List<T> FindByKeyword(string keyword, DateTime startTime, DateTime endTime, int pageIndex, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
+        //public void Delete(DateTime startTime, DateTime endTime)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public int Delete()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Delete(DateTime startTime, DateTime endTime)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<T> FindByCriteria(Criteria criteria)
-        {
-            throw new NotImplementedException();            
-        }
+        //public List<T> FindByCriteria(Criteria criteria)
+        //{
+        //    throw new NotImplementedException();            
+        //}
 
         #endregion
 
@@ -85,7 +83,7 @@ namespace SupportAnalyst.Data
             {
                 if (disposing)
                 {
-                    _dataContext.Dispose();
+                    DataContext.Dispose();
                 }
             }
             this._disposed = true;

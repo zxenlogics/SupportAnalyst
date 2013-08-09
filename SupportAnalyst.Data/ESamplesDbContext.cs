@@ -29,10 +29,13 @@ namespace SupportAnalyst.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<LogEntry>().ToTable("ESamplesLog");            
+            modelBuilder.Entity<LogEntry>().ToTable("ESamplesLog");
+
+            modelBuilder.Entity<LogEntry>().Property(c => c.Id).HasColumnName("Id");
             modelBuilder.Entity<LogEntry>().Property(c => c.TimeStamp).HasColumnName("Date");
             modelBuilder.Entity<LogEntry>().Property(c => c.LogType).HasColumnName("Level");
-            modelBuilder.Entity<LogEntry>().Property(c => c.Logger).IsOptional();   
+            modelBuilder.Entity<LogEntry>().Property(c => c.Misc).HasColumnName("Logger");
+            modelBuilder.Entity<LogEntry>().Property(c => c.Message).HasColumnName("Message"); 
         }
 
         public ESamplesDbContext()

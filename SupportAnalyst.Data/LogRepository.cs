@@ -4,67 +4,42 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SupportAnalyst.Model;
 
+using SupportAnalyst.Model;
 
 namespace SupportAnalyst.Data
 {
-    //public class PacLogRepository : LogRepository<ESamplesDbContext>
-    //{
-    //    public PacLogRepository()
-    //    {
-            
-    //    }
-    //}
+    public class LogRepository : GenericRepository<LogEntry>, ILogRepository
+    {
+        private const int DefaultHoursFromNow = -12;
+        private const int DefaultPageIndex = 0;
+        private const int DefaultPageSize = 50;
 
-    //public class LogRepository<C> : RepositoryBase, ILogRepository 
-    //    where C: DbContext, new()
-    //{
-    //    //private C db = null;
+        public LogRepository()
+        { }
 
-    //    public LogRepository()
-    //    {}
+        public LogRepository(DbContext dbContext) :
+            base(dbContext)
+        { }
 
-    //    public LogRepository(C dbContext): 
-    //        base(dbContext)
-    //    {}
+        public IQueryable<LogEntry> FindByKeyword(string keyword)
+        {
+            return FindByKeyword(keyword, DefaultPageIndex,  DefaultPageSize);
+        }
 
-    //    public LogEntry FindById(int key)
-    //    {
-    //        return base.FindById<LogEntry>(key);
-    //    }
+        public IQueryable<LogEntry> FindByKeyword(string keyword, int pageIndex, int pageSize)
+        {
+            return FindByKeyword(keyword, DateTime.Now, DateTime.Now.AddHours(DefaultHoursFromNow), pageIndex, pageSize);
+        }
 
-    //    //public LogEntry FindById(int key)
-    //    //{
-    //    //    return new LogEntry()
-    //    //    {
-    //    //        Id = 1568, 
-    //    //        TimeStamp = DateTime.Now, 
-    //    //        LogType = "Debug", 
-    //    //        Logger = "Generic",
-    //    //        Message = @"[(null)] – Method=OnLoad, SessionId=jfpe2mehut1pokqxfdgcfqna, HcpId=1249475, eMailID=esigtest804@mailinator.com, CurrentPage=/requestsamples.aspx, Context.Server.MachineName=W8-DBROWN, QueryString:"
-    //    //    };
-    //    //}
+        public IQueryable<LogEntry> FindByKeyword(string keyword, DateTime startTime, DateTime endTime, int pageIndex, int pageSize)
+        {
+            return DataContext.Set<LogEntry>().Where(l => l.Message.Contains(keyword) && l.TimeStamp <= startTime && l.TimeStamp >= endTime);
+        }
 
-    //    public List<LogEntry> FindByKeyword(string keyword, int pageIndex, int pageSize)
-    //    {
-            
-    //        throw new NotImplementedException();
-    //    }
-
-    //    public List<LogEntry> FindByKeyword(string keyword, DateTime startTime, DateTime endTime, int pageIndex, int pageSize)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-
-    //    public int DeleteAll()
-    //    {        
-    //        throw new NotImplementedException();
-    //    }
-
-    //    public int Delete(DateTime startTime, DateTime endTime)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
+        public List<LogEntry> FindByCriteria(Criteria criteria)
+        {
+            return this.Get().Where(criteria.GetExpression()).ToList();
+        }
+    }
 }

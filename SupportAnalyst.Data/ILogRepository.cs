@@ -8,13 +8,14 @@ using SupportAnalyst.Model;
 
 namespace SupportAnalyst.Data
 {
-    public interface ILogRepository
+    public interface ILogRepository : IRepository<LogEntry>
     {
-        //LogEntry FindById(int key);
-        //List<LogEntry> FindByKeyword(string keyword, int pageIndex, int pageSize);
-        //List<LogEntry> FindByKeyword(string keyword, DateTime startTime, DateTime endTime, int pageIndex, int pageSize);
+        IQueryable<LogEntry> FindByKeyword(string keyword);
+        IQueryable<LogEntry> FindByKeyword(string keyword, int pageIndex, int pageSize);
+        IQueryable<LogEntry> FindByKeyword(string keyword, DateTime startTime, DateTime endTime, int pageIndex, int pageSize);
+        List<LogEntry> FindByCriteria(Criteria criteria); 
         //int DeleteAll();
-        //int Delete(DateTime startTime, DateTime endTime);
+        //Delete(DateTime startTime, DateTime endTime);
 
     }
 }

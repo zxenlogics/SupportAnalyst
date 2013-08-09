@@ -30,9 +30,12 @@ namespace SupportAnalyst.Data
         {
             //base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<LogEntry>().ToTable("Log");
+
             modelBuilder.Entity<LogEntry>().Property(c => c.Id).HasColumnName("LogId");
+            modelBuilder.Entity<LogEntry>().Property(c => c.TimeStamp).HasColumnName("TimeStamp");
             modelBuilder.Entity<LogEntry>().Property(c => c.LogType).HasColumnName("Severity");
-            modelBuilder.Entity<LogEntry>().Property(c => c.Logger).IsOptional();            
+            modelBuilder.Entity<LogEntry>().Property(c => c.Misc).HasColumnName("MachineName");
+            modelBuilder.Entity<LogEntry>().Property(c => c.Message).HasColumnName("Message");
         }
 
         public PACDbContext()

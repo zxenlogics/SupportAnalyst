@@ -11,7 +11,7 @@ namespace SupportAnalyst.Model
         public int Id { get; set; }
         public DateTime TimeStamp { get; set; }
         public string LogType { get; set; }
-        public string Logger { get; set; }
+        public string Misc { get; set; }
         public string Message { get; set; }
     }
 }
