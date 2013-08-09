@@ -14,7 +14,8 @@ namespace SupportAnalyst.Data
         IFluentCriteria EventStartTime(DateTime startTime);
         IFluentCriteria EventEndTime(DateTime endTime);
         IFluentCriteria MessageKeyword(string keyword);
-        Expression<Func<LogEntry, bool>> CriteriaExpression();
+        Criteria Instance();
+        //Expression<Func<LogEntry, bool>> CriteriaExpression();
     }
 
     public class Criteria
@@ -31,7 +32,7 @@ namespace SupportAnalyst.Data
         public Expression<Func<LogEntry, bool>> GetExpression()
         {
            Expression<Func<LogEntry, bool>> filter = l =>            
-                l.LogType == LogType && l.TimeStamp >= StartTime && l.TimeStamp <= EndTime &&
+                l.LogType == LogType && l.TimeStamp <= StartTime && l.TimeStamp >= EndTime &&
                 l.Message.Contains(Keyword);
             
             return filter;
@@ -44,8 +45,7 @@ namespace SupportAnalyst.Data
 
         public QueryCriteria()
         {
-            _criteria = new Criteria();
-            ;
+            _criteria = new Criteria();            
         }
 
         public IFluentCriteria EventType(string logType)
@@ -72,10 +72,11 @@ namespace SupportAnalyst.Data
             return this;
         }
 
-        public Expression<Func<LogEntry, bool>> CriteriaExpression()
+        public Criteria Instance()
         {
-            return _criteria.GetExpression();
+            return _criteria;
         }
+
     }
 
 

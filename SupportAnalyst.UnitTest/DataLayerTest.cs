@@ -36,13 +36,36 @@ namespace SupportAnalyst.UnitTest
         {
             var criteria = new QueryCriteria();
 
-            //Criteria d = criteria.EventType("Error")
-            //    .EventStartTime(DateTime.Now)
-            //    .EventEndTime(DateTime.Now)
-            //    .MessageKeyword("SessionId");
+            Criteria d = criteria.EventType("Error")
+                .EventStartTime(DateTime.Now)
+                .EventEndTime(DateTime.Now)
+                .MessageKeyword("SessionId").Instance();
 
-
+            Console.WriteLine(d.GetExpression().ToString());
         }
+
+        #region << LogRepository.FindByCriteria() >>
+
+        [TestMethod]
+        public void FindByCriteriaTest()
+        {
+            Criteria criteria = new QueryCriteria()
+                .EventType("INFO")
+                .EventStartTime(DateTime.Now)
+                .EventEndTime(DateTime.Now.AddDays(-10))
+                .MessageKeyword("Method").Instance();
+
+            Stopwatch timer = Stopwatch.StartNew();
+
+            var samplesLogEntry = samplesRepository.FindByCriteria(criteria).ToList();
+            //var pacLogEntry = pacRepository.FindByCriteria("Data").ToList();
+
+            timer.Stop();
+
+            Console.WriteLine("Elapsed: {0}, eSamples.Misc: {1}\n eSamples.Message: {2}\n", timer.Elapsed.Seconds, samplesLogEntry.Count, samplesLogEntry[0].Message);
+            //Console.WriteLine("Elapsed: {0}, Pac.MachineName: {1}\n Pac.Message: {2},", timer.Elapsed.Seconds, pacLogEntry.Count(), pacLogEntry[0].Message);
+        }
+        #endregion
 
         #region << GenericRepositoryTest >>
 
@@ -76,16 +99,15 @@ namespace SupportAnalyst.UnitTest
 
             Stopwatch timer = Stopwatch.StartNew();
 
-            var samplesLogEntry = samplesRepository.FindByKeyword("Method");
-            var pacLogEntry = pacRepository.FindById(8);
+            var samplesLogEntry = samplesRepository.FindByKeyword("OnLoad").ToList();
+            var pacLogEntry = pacRepository.FindByKeyword("Data").ToList();
 
             timer.Stop();
 
-            Console.WriteLine("Elapsed: {0}, eSamples.Misc: {1}\n eSamples.Message: {2}\n", timer.Elapsed.Seconds, samplesLogEntry.Count, samplesLogEntry[1].Message);
-            Console.WriteLine("Elapsed: {0}, Pac.MachineName: {1}\n Pac.Message: {2},", timer.Elapsed.Seconds, pacLogEntry.Misc, pacLogEntry.Message);
+            Console.WriteLine("Elapsed: {0}, eSamples.Misc: {1}\n eSamples.Message: {2}\n", timer.Elapsed.Seconds, samplesLogEntry.Count, samplesLogEntry[0].Message);
+            Console.WriteLine("Elapsed: {0}, Pac.MachineName: {1}\n Pac.Message: {2},", timer.Elapsed.Seconds, pacLogEntry.Count(), pacLogEntry[0].Message);
         }
         #endregion
-
 
         #region << LogRepositoryTest >>
 

@@ -11,7 +11,7 @@ namespace SupportAnalyst.Data
 {
     public class LogRepository : GenericRepository<LogEntry>, ILogRepository
     {
-        private const int DefaultHoursFromNow = -12;
+        private const int DefaultHoursFromNow = -24;
         private const int DefaultPageIndex = 0;
         private const int DefaultPageSize = 50;
 
@@ -25,6 +25,7 @@ namespace SupportAnalyst.Data
         public IQueryable<LogEntry> FindByKeyword(string keyword)
         {
             return FindByKeyword(keyword, DefaultPageIndex,  DefaultPageSize);
+            //return DataContext.Set<LogEntry>().Where(l => l.Message.Contains(keyword));
         }
 
         public IQueryable<LogEntry> FindByKeyword(string keyword, int pageIndex, int pageSize)
@@ -34,7 +35,7 @@ namespace SupportAnalyst.Data
 
         public IQueryable<LogEntry> FindByKeyword(string keyword, DateTime startTime, DateTime endTime, int pageIndex, int pageSize)
         {
-            return DataContext.Set<LogEntry>().Where(l => l.Message.Contains(keyword) && l.TimeStamp <= startTime && l.TimeStamp >= endTime);
+            return this.Get().Where(l => l.Message.Contains(keyword) && l.TimeStamp <= startTime && l.TimeStamp >= endTime);
         }
 
         public List<LogEntry> FindByCriteria(Criteria criteria)
