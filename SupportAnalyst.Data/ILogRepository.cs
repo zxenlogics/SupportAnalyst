@@ -14,8 +14,5 @@ namespace SupportAnalyst.Data
         IQueryable<LogEntry> FindByKeyword(string keyword, int pageIndex, int pageSize);
         IQueryable<LogEntry> FindByKeyword(string keyword, DateTime startTime, DateTime endTime, int pageIndex, int pageSize);
         List<LogEntry> FindByCriteria(Criteria criteria); 
-        //int DeleteAll();
-        //Delete(DateTime startTime, DateTime endTime);
-
     }
 }

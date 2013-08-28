@@ -18,8 +18,7 @@ namespace SupportAnalyst.Data
         public LogRepository()
         { }
 
-        public LogRepository(DbContext dbContext) :
-            base(dbContext)
+        public LogRepository(DbContext dbContext) : base(dbContext)
         { }
 
         public IQueryable<LogEntry> FindByKeyword(string keyword)
